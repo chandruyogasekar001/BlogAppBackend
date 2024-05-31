@@ -10,11 +10,15 @@ const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(cors());
 
+const username = encodeURIComponent("chandru1");
+const password = encodeURIComponent("123456dcba123");
+const dbName = "blogdb";
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/blogDB', { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => console.log('Connected to MongoDB'));
+const URL=`mongodb+srv://${username}:${password}@cluster0.kxaxwvq.mongodb.net/${dbName}`;
+mongoose.connect(URL);
+const db = mongoose.connection.on('connected',()=>{
+  console.log('mongodb connected');
+});
 
 // Define Schema for Blog Post
 const blogSchema = new mongoose.Schema({
